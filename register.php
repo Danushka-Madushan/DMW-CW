@@ -28,12 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Prepare SQL query with placeholders
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+            $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
 
             // Bind parameters and execute the statement
             $stmt->execute([
                 ':name' => $name,
-                ':email' => $email,
+                ':email' => strtolower($email),
                 ':password' => $hashedPassword
             ]);
 
