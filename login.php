@@ -35,20 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute([$email]); 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
-            // Verify password
-            switch ($pword) {
-                case $user['password']:
-                    $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['name'];
-                    $_SESSION['email'] = $email;
+        if ($user && password_verify($pword, $user['password'])) {
+            // Password is correct, start session
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['name'];
+            $_SESSION['email'] = $email;
 
-                    echo "<script>SuccessToast(\"{$user['name']}\");</script>";
-                    return;
-                default:
-                    echo "<script>ErrorToast(\"Invalid username or password\");</script>";
-                    break;
-            }
+            echo "<script>SuccessToast(\"{$user['name']}\");</script>";
         } else {
             echo "<script>ErrorToast(\"Invalid username or password\");</script>";
         }
@@ -57,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 <section class="h-100">
     <div class="container h-100">
         <div class="row justify-content-sm-center h-100">
