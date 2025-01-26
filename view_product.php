@@ -1,10 +1,38 @@
-<?php include 'models/header.php'; ?>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include 'models/header.php';
+include 'models/db.php'; // Ensure this file correctly sets up a PDO connection
+include 'models/utils.php';
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const newToast = ( content, amount, id ) => {
+        Swal.fire( {
+            title: 'Success',
+            text: content + " X " + amount,
+            icon: "success",
+            confirmButtonText: 'OK'
+        } ).then(() => {
+            location.replace("view_product.php?id=" + id);
+        })
+    }
+    function ErrorToast (id) {
+        Swal.fire({ title: 'Oops!', text: `Requested amount of stock not available!`, icon: 'error', confirmButtonText: 'OK' }).then(() => {
+            location.replace("view_product.php?id=" + id);
+        })
+    };
+</script>
 <section>
     <div class="container px-4 px-lg-5">
         <?php
-        include 'models/db.php'; // Ensure this file correctly sets up a PDO connection
-        include 'models/utils.php';
-        
+        include 'models/cartfunc.php';
+        include 'models/productfunc.php';
+
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $product_id = $_GET['id'];
 
@@ -16,6 +44,19 @@
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($product) {
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['amount'])) {
+                    if (!isset($_SESSION['user_id'])) {
+                        die('<script>location.replace("login.php");</script>');
+                    }
+                    $available_amount = getAvailableStock($product_id, $conn);
+                    if ($available_amount < (int)$_POST['amount']) {
+                        echo "<script>ErrorToast({$product_id});</script>";
+                    } else {
+                        addToCart((int)$product_id,  (int)$_POST['amount']);
+                        echo "<script>newToast(\"" . $product['name'] . "\", {$_POST['amount']}, {$product_id});</script>";
+                    }
+                }
+
                 echo "<div class='row gx-4 gx-lg-5 align-items-center'>";
                 echo "<div class='col-md-6'>";
                 echo "<img class='card-img-top mb-5 mb-md-0' src='{$product['image']}' alt='...' />";
@@ -32,7 +73,7 @@
                 echo "</div></div>";
                 echo "<h1 class='display-6 fw-bolder'>{$product['name']}</h1>";
 
-                $stock = (int)$product['stock'];
+                $stock = (int) $product['stock'];
                 $can_buy = true;
 
                 if ($stock == 0) {
@@ -43,16 +84,17 @@
                 } else {
                     echo "<span class='badge text-bg-success' style='font-size: 13px'>{$stock} In Stock</span>";
                 }
-                
+
                 echo "<div class='fs-5 mb-4 mt-1'>";
-                echo "<span class='lead badge text-bg-primary' style='font-family: Roboto; font-size: 20px'>Rs " . customFormatPrice((int)$product['price']) . "</span>";
+                echo "<span class='lead badge text-bg-primary' style='font-family: Roboto; font-size: 20px'>Rs " . customFormatPrice((int) $product['price']) . "</span>";
                 echo "</div>";
 
-                echo "<div class='d-flex'>";
-                echo "<input class='form-control text-center me-3' id='inputQuantity' type='num' value='1' min='1' style='max-width: 3rem' />";
-                echo "<button onclick='newToast(\"Success\")' class='btn btn-outline-dark flex-shrink-0' type='button' " . (!$can_buy ? "disabled" : "") . ">";
+                echo "<form class='d-flex' method='POST'>";
+                echo "<input name='amount' class='form-control text-center me-3' id='inputQuantity' type='num' value='1' min='1' style='max-width: 3rem' />";
+                echo "<button class='btn btn-outline-dark flex-shrink-0' type='submit' " . (!$can_buy ? "disabled" : "") . ">";
                 echo "<i class='bi-cart-fill me-1'></i>Add to cart</button>";
-                echo "</div></div></div>";
+                echo "</form>";
+                echo "</div></div>";
 
                 echo "<h2 class='mt-3'>Product Specifications</h2>";
                 echo "<p class='lead'>" . nl2br(htmlspecialchars($product['description'])) . "</p>";
@@ -104,16 +146,5 @@
             ?>
         </div>
     </div>
-    <script>
-        const amount =document.getElementById('inputQuantity').value
-        const newToast = (content) => {
-            Swal.fire({
-                title: 'Success',
-                text: 'Arctic P12 Max (Black) Fan X 1',
-                icon: "success",
-                confirmButtonText: 'OK'
-            })
-        }
-    </script>
 </section>
 <?php include 'models/footer.php'; ?>
