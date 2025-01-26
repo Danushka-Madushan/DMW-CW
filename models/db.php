@@ -1,6 +1,6 @@
 <?php
 $host = "localhost"; // This is the container name, not localhost
-$dbname = "trustcareComputers";
+$dbname = "trustcarecomputers";
 $username = "webapp";
 $password = "BrsMVUDvx3BHfpN4kt8I";
 
