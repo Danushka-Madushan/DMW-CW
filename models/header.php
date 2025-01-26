@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="./public/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 
 <body>
@@ -70,8 +71,6 @@
                         <button class="btn btn-outline-success">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-primary text-white ms-1 rounded-5"
-                                style="font-family: Roboto;">0</span>
                         </button>
                     </a>
                 </div>
