@@ -1,8 +1,12 @@
 <?php
+include 'models/db.php';
+include 'models/utils.php';
+include 'models/cartfunc.php';
+include 'models/header.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include 'models/header.php';
 if (!isset($_SESSION['user_id'])) {
     die('<script>location.replace("login.php");</script>');
 }
@@ -22,10 +26,6 @@ if (!isset($_SESSION['cart'])) {
                     </h3>
                 </div>
                 <?php
-                include 'models/db.php';
-                include 'models/utils.php';
-                include 'models/cartfunc.php';
-
                 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_id'])) {
                     removeFromCart($_POST['delete_id']);
                 }
