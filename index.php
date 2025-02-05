@@ -1,4 +1,7 @@
-<?php include 'models/header.php'; ?>
+<?php
+include 'models/header.php';
+include 'models/db.php';
+?>
 
 <body>
     <!-- Header-->
@@ -15,7 +18,6 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <?php
-            include 'models/db.php';
             $sql = "SELECT * FROM products WHERE category IN ('Processors', 'Motherboards', 'Coolers', 'SSD', 'Graphics Cards', 'Monitors', 'Laptops', 'Apple Products') ORDER BY RAND() LIMIT 8;";
             $products = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
