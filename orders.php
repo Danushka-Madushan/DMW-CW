@@ -1,17 +1,17 @@
 <?php
+include 'models/header.php';
+include 'models/db.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include 'models/header.php';
 if (!isset($_SESSION['user_id'])) {
     die('<script>location.replace("login.php");</script>');
 }
-
 ?>
 <link rel="stylesheet" href="./public/css/order.css">
 <div class="container py-5">
     <?php
-    include 'models/db.php';
     $sql = "SELECT * FROM orders WHERE owner_id = '{$_SESSION['user_id']}';";
     $orders = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
@@ -25,7 +25,7 @@ if (!isset($_SESSION['user_id'])) {
         echo "<div class='row align-items-center'><div class='col-auto'>";
         echo "<img src='https://api.iconify.design/material-symbols:package-2.svg?color=%23146eff' alt='Product' class='order-img'>";
         echo "</div><div class='col'><div class='d-flex justify-content-between align-items-center mb-3'>";
-        echo "<h5 class='order-number mb-0'>ORDER #". strtoupper(substr(hash('sha256', $order["placed_date"]), 0, 8)) ."</h5><span class='badge bg-success status-badge'>Delivered</span>";
+        echo "<h5 class='order-number mb-0'>ORDER #" . strtoupper(substr(hash('sha256', $order["placed_date"]), 0, 8)) . "</h5><span class='badge bg-success status-badge'>Delivered</span>";
         echo "</div></div></div><div class='order-details mt-4'><div class='row mt-3'>";
         echo "<div class='col-md-3 col-6 mb-3'><div class='detail-block'>";
         echo "<span class='label'>Order Date</span><span class='value'>{$formattedPlacedDate}</span></div></div>";
