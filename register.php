@@ -1,21 +1,22 @@
-<?php include 'models/header.php'; ?>
+<?php
+include 'models/header.php';
+include 'models/db.php';
+?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function SuccessToast (mail) {
-        Swal.fire({ title: 'Successfully Registered!', text: `${mail} is registered!`, icon: 'success', confirmButtonText: 'Login' }).then(() => {
-            location.replace('./login.php')
-        })
+    function SuccessToast ( mail ) {
+        Swal.fire( { title: 'Successfully Registered!', text: `${ mail } is registered!`, icon: 'success', confirmButtonText: 'Login' } ).then( () => {
+            location.replace( './login.php' )
+        } )
     };
-    function ErrorToast (mail) {
-        Swal.fire({ title: 'Email in Use!', text: `${mail} is already registered!`, icon: 'error', confirmButtonText: 'OK' })
+    function ErrorToast ( mail ) {
+        Swal.fire( { title: 'Email in Use!', text: `${ mail } is already registered!`, icon: 'error', confirmButtonText: 'OK' } )
     };
     function unExpected () {
-        Swal.fire({ title: 'Oops!', text: `Something Unexpected Happed, Try again!`, icon: 'error', confirmButtonText: 'OK' })
+        Swal.fire( { title: 'Oops!', text: `Something Unexpected Happed, Try again!`, icon: 'error', confirmButtonText: 'OK' } )
     };
 </script>
 <?php
-include 'models/db.php'; // Ensure this file initializes a PDO connection ($pdo)
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve and sanitize form data
     $name = trim($_POST['name'] ?? '');
