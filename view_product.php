@@ -1,10 +1,13 @@
 <?php
+include 'models/header.php';
+include 'models/db.php';
+include 'models/utils.php';
+include 'models/cartfunc.php';
+include 'models/productfunc.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-include 'models/header.php';
-include 'models/db.php'; // Ensure this file correctly sets up a PDO connection
-include 'models/utils.php';
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -17,21 +20,19 @@ if (!isset($_SESSION['cart'])) {
             text: content + " X " + amount,
             icon: "success",
             confirmButtonText: 'OK'
-        } ).then(() => {
-            location.replace("view_product.php?id=" + id);
-        })
+        } ).then( () => {
+            location.replace( "view_product.php?id=" + id );
+        } )
     }
-    function ErrorToast (id) {
-        Swal.fire({ title: 'Oops!', text: `Requested amount of stock not available!`, icon: 'error', confirmButtonText: 'OK' }).then(() => {
-            location.replace("view_product.php?id=" + id);
-        })
+    function ErrorToast ( id ) {
+        Swal.fire( { title: 'Oops!', text: `Requested amount of stock not available!`, icon: 'error', confirmButtonText: 'OK' } ).then( () => {
+            location.replace( "view_product.php?id=" + id );
+        } )
     };
 </script>
 <section>
     <div class="container px-4 px-lg-5">
         <?php
-        include 'models/cartfunc.php';
-        include 'models/productfunc.php';
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $product_id = $_GET['id'];
@@ -49,10 +50,10 @@ if (!isset($_SESSION['cart'])) {
                         die('<script>location.replace("login.php");</script>');
                     }
                     $available_amount = getAvailableStock($product_id, $conn);
-                    if ($available_amount < (int)$_POST['amount']) {
+                    if ($available_amount < (int) $_POST['amount']) {
                         echo "<script>ErrorToast({$product_id});</script>";
                     } else {
-                        addToCart((int)$product_id,  (int)$_POST['amount']);
+                        addToCart((int) $product_id, (int) $_POST['amount']);
                         echo "<script>newToast(\"" . $product['name'] . "\", {$_POST['amount']}, {$product_id});</script>";
                     }
                 }
