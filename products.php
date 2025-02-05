@@ -30,20 +30,33 @@ $allowed_categories = [
 
 // Get the category from the query parameter
 $category = $_GET['cat'] ?? null;
+$search = $_GET['search'] ?? null;
 $sql;
 
 // Validate if it's in the allowed list
 if ($category && in_array($category, $allowed_categories)) {
-    $sql = "SELECT * FROM products WHERE category = '" . htmlspecialchars($category) . "';";
+    $sql = "SELECT * FROM products WHERE category = '" . htmlspecialchars($category) . "'";
+    if ($search) {
+        $sql .= " AND `name` LIKE '%{$search}%';";
+    }
 } else {
     $category = "All Products";
-    $sql = "SELECT * FROM products ORDER BY FIELD(category, 'Processors', 'Graphics Cards', 'Motherboards') DESC, product_id DESC";
+    $sql = "SELECT * FROM products";
+    if ($search) {
+        $sql .= " WHERE `name` LIKE '%{$search}%'";
+    }
+    $sql .= " ORDER BY FIELD(category, 'Processors', 'Graphics Cards', 'Motherboards') DESC, product_id DESC";
 }
 
-echo "<body> <header class='bg-dark py-1'> <div class='container px-4 px-lg-5 my-5'><div class='text-center text-white'>";
-echo "<h1 class='display-5' style='text-transform: uppercase;'>{$category}</h1></div></div></header>";
-echo "<div class='container px-4 px-lg-5 mt-5'>";
+echo "<body> <header class='bg-dark py-1'> <div class='container-fluid bg-container-small text-center text-white d-flex align-items-center justify-content-center'><div class='text-center text-white'>";
+echo "<h1 class='display-5 glow-text-blue' style='text-transform: uppercase;'>{$category}</h1></div></div></header>";
+echo "<div class='container px-4 px-lg-5 mt-3'>";
 echo "<div class='row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center'>";
+
+echo "<form class='input-group mb-3'>";
+echo "<input type='hidden' name='cat' value='{$category}'></input>";
+echo "<input name='search' type='text' class='form-control' placeholder='Search' value='{$search}' aria-label='Search' aria-describedby='button-addon2'>";
+echo "<button class='btn btn-primary' type='submit' id='button-addon2'>Search</button></form>";
 
 $products = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 

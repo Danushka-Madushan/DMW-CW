@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
         echo "<span class='label'>Delivery Estimate</span>";
         echo "<span class='value'>{$formattedEstimateDate}</span></div></div></div></div>";
         echo "<div class='order-actions mt-4 pt-3'>";
-        echo "<button class='btn btn-primary me-2'>View Details</button>";
+        echo "<a href='orderdetails.php?id={$order['order_id']}'><button class='btn btn-primary me-2'>View Details</button></a>";
         echo "</div></div></div>";
     }
     ?>

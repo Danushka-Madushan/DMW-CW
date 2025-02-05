@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Trustcare Computers</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/771/771298.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- Bootstrap icons-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -50,7 +51,6 @@
                             <li><a class="dropdown-item" href="products.php?cat=UPS">UPS</a></li>
                             <li><a class="dropdown-item" href="products.php?cat=Laptops">Laptops</a></li>
                             <li><a class="dropdown-item" href="products.php?cat=Chairs">Chairs</a></li>
-                            <li><a class="dropdown-item" href="products.php?cat=Tables">Tables</a></li>
                             <li><a class="dropdown-item" href="products.php?cat=Keyboards">Keyboards</a></li>
                             <li><a class="dropdown-item" href="products.php?cat=Mouse">Mouse</a></li>
                             <li><a class="dropdown-item" href="products.php?cat=Speakers">Speakers</a></li>

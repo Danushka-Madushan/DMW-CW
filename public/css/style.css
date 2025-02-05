@@ -23,6 +23,14 @@
     height: 300px; /* Default height for larger screens */
 }
 
+.bg-container-small {
+    background-image: url('https://cdn.wallpapersafari.com/22/55/dMFbZx.jpg'); /* Change to your actual image */
+    background-size: cover;  /* Ensures the image covers the entire div */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    height: 150px; /* Default height for larger screens */
+}
+
 /* Media query for mobile (max-width: 768px) */
 @media (max-width: 768px) {
     .bg-container {
