@@ -1,4 +1,9 @@
 <?php
+include 'models/db.php';
+include 'models/utils.php';
+include 'models/productfunc.php';
+include 'models/orderfunc.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -44,15 +49,10 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['cart']) || count($_SESSION
                     <div class="products">
                         <h3 class="title">Checkout</h3>
                         <?php
-                        include 'models/db.php';
-                        include 'models/utils.php';
-                        include 'models/productfunc.php';
-                        include 'models/orderfunc.php';
-
                         $delivery_charge = 300 * count($_SESSION['cart']);
                         $total_amount = 0;
                         $order_items = [];
-                        
+
                         foreach ($_SESSION['cart'] as &$item) {
                             $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
                             $stmt->execute([$item['product_id']]);
@@ -69,7 +69,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['cart']) || count($_SESSION
                         }
 
                         echo "<div class='total'>Total (Rs 300 x " . count($_SESSION['cart']) . ")<span class='price'>Rs " . customFormatPrice((int) $delivery_charge + (int) $total_amount) . "</span></div>";
-                        
+
                         if ($_SERVER["REQUEST_METHOD"] == "GET") {
                             if (!isset($_SESSION['user_id'])) {
                                 die('<script>location.replace("login.php");</script>');
@@ -80,10 +80,10 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['cart']) || count($_SESSION
                                 $order_items[] = $new_item;
                             }
                             placeOrder($_SESSION['user_id'], $order_items, (int) $delivery_charge + (int) $total_amount);
-                            $_SESSION['cart']= [];
+                            $_SESSION['cart'] = [];
                             echo "<script>newToast();</script>";
                         }
-                        
+
                         ?>
                     </div>
                     <div class="card-details">
