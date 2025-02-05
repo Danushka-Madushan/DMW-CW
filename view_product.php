@@ -1,13 +1,14 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include 'models/header.php';
 include 'models/db.php';
 include 'models/utils.php';
 include 'models/cartfunc.php';
 include 'models/productfunc.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }

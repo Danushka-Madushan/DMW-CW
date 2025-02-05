@@ -1,12 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include 'models/db.php';
 include 'models/utils.php';
 include 'models/productfunc.php';
 include 'models/orderfunc.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['cart']) || count($_SESSION['cart']) === 0 || !isset($_POST['delcharge'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die('<script>location.replace("index.php");</script>');

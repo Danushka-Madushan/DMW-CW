@@ -1,10 +1,11 @@
 <?php
-include 'models/header.php';
-include 'models/db.php';
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+include 'models/header.php';
+include 'models/db.php';
+
 if (!isset($_SESSION['user_id'])) {
     die('<script>location.replace("login.php");</script>');
 }
