@@ -1,12 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include 'models/db.php';
 include 'models/utils.php';
 include 'models/cartfunc.php';
 include 'models/header.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 if (!isset($_SESSION['user_id'])) {
     die('<script>location.replace("login.php");</script>');
 }
